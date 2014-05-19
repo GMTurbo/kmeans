@@ -44,7 +44,22 @@ $(document).ready(function(){
   
   var snagged = null;
   
-  $(window).on('mousedown', function(data){
+  $(window).on('mousedown touchstart', function(data){
+    
+    data.preventDefault();
+    
+    if(data.type == "touchstart"){
+      var touch = data.originalEvent.touches[0] || data.originalEvent.changedTouches[0];
+      
+      snagged = getCluster(touch.clientX, touch.clientY);
+      
+      if(snagged){
+        console.dir(snagged);
+      }
+      
+      return;
+    }
+    
     if(data.shiftKey){
       
       removeCenter(data.clientX, data.clientY);
@@ -63,13 +78,26 @@ $(document).ready(function(){
     }
   });
   
-  $(window).on('mousemove', function(data){
+  $(window).on('mousemove touchmove', function(data){
+    
+    data.preventDefault();
+    
+    if(data.type == "touchmove"){
+      var touch = data.originalEvent.touches[0] || data.originalEvent.changedTouches[0];
+      data
+      
+      data.clientX = touch.clientX;
+      data.clientY = touch.clientY;
+    }
+    
     if(snagged){
       snagged.center = [data.clientX, data.clientY];
     }
   });
   
-  $(window).on('mouseup', function(data){
+  $(window).on('mouseup touchend', function(data){
+    
+    data.preventDefault();
     snagged = null;
   })
   
